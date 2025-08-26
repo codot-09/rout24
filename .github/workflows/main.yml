@@ -1,7 +1,7 @@
 name: Deploy Rout
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 

@@ -1,6 +1,5 @@
 package org.example.rout24.exception;
 
-import org.example.rout24.constants.Messages;
 import org.example.rout24.dto.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<?>> serverError(Exception ex){
         return ResponseEntity.status(500)
-                .body(ApiResponse.error(Messages.SERVER_ERROR));
+                .body(ApiResponse.error("Serverda xatolik"));
     }
 
     public ResponseEntity<ApiResponse<?>> badRequest(BadRequestException ex){

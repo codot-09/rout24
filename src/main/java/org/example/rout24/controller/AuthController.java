@@ -2,7 +2,6 @@ package org.example.rout24.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.example.rout24.constants.ApiPath;
 import org.example.rout24.dto.ApiResponse;
 import org.example.rout24.dto.request.LoginRequest;
 import org.example.rout24.entity.enums.Role;
@@ -11,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(ApiPath.API + ApiPath.AUTH)
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 

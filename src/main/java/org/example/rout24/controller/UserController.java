@@ -3,7 +3,6 @@ package org.example.rout24.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
-import org.example.rout24.constants.ApiPath;
 import org.example.rout24.dto.ApiResponse;
 import org.example.rout24.dto.response.UserResponse;
 import org.example.rout24.entity.User;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(ApiPath.API + ApiPath.USER)
+@RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
 

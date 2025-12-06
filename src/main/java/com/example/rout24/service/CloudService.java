@@ -1,0 +1,75 @@
+package com.example.rout24.service;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.*;
+import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
+@Service
+@RequiredArgsConstructor
+public class CloudService {
+
+    private static final long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+    private static final String UPLOAD_URL = "https://api.imgbb.com/1/upload";
+
+    @Value("${cloud.api.key}")
+    private String apiKey;
+
+    private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
+
+    public String uploadImage(MultipartFile file) {
+        validateImageFile(file);
+
+        try {
+            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+            body.add("key", apiKey);
+            body.add("image", new ByteArrayResource(file.getBytes()) {
+                @Override
+                public String getFilename() {
+                    return file.getOriginalFilename();
+                }
+            });
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+            String response = restTemplate.postForObject(UPLOAD_URL, requestEntity, String.class);
+
+            JsonNode urlNode = objectMapper.readTree(response).path("data").path("url");
+            if (urlNode.isMissingNode() || urlNode.asText().isBlank()) {
+                throw new RuntimeException("Rasm yuklanmadi: URL topilmadi");
+            }
+            return urlNode.asText();
+
+        } catch (IOException e) {
+            throw new RuntimeException("Rasmni o'qishda xatolik: " + e.getMessage(), e);
+        } catch (Exception e) {
+            throw new RuntimeException("ImgBB server bilan aloqa xatosi: " + e.getMessage(), e);
+        }
+    }
+
+    private void validateImageFile(MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("Fayl bo'sh yoki yuklanmagan");
+        }
+        if (file.getSize() > MAX_FILE_SIZE) {
+            throw new IllegalArgumentException("Fayl hajmi 5MB dan oshmasligi kerak");
+        }
+        String type = file.getContentType();
+        if (type == null || !type.startsWith("image/")) {
+            throw new IllegalArgumentException("Faqat rasm fayllari qabul qilinadi");
+        }
+    }
+}

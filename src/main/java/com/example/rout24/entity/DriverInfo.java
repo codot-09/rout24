@@ -1,0 +1,40 @@
+package com.example.rout24.entity;
+
+import com.example.rout24.entity.enums.Gender;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDate;
+import java.util.UUID;
+
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Table(name = "driver_infos", indexes = {
+    @Index(name = "idx_driver_chat_id", columnList = "driver_chat_id"),
+    @Index(name = "idx_verified", columnList = "verified")
+})
+public class DriverInfo {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "driver_chat_id", nullable = false, unique = true)
+    private User driver;
+
+    private String driverLicense;
+
+    private String passportId;
+
+    private LocalDate birthDate;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    private boolean verified;
+}

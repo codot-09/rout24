@@ -3,6 +3,7 @@ package com.example.rout24.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CloudService {
@@ -29,6 +31,8 @@ public class CloudService {
 
     public String uploadImage(MultipartFile file) {
         validateImageFile(file);
+        
+        log.debug("Starting image upload for file: {} (size: {} bytes)", file.getOriginalFilename(), file.getSize());
 
         try {
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
@@ -49,26 +53,35 @@ public class CloudService {
 
             JsonNode urlNode = objectMapper.readTree(response).path("data").path("url");
             if (urlNode.isMissingNode() || urlNode.asText().isBlank()) {
+                log.error("Failed to get image URL from ImgBB response");
                 throw new RuntimeException("Rasm yuklanmadi: URL topilmadi");
             }
-            return urlNode.asText();
+            
+            String imageUrl = urlNode.asText();
+            log.debug("Image uploaded successfully: {}", imageUrl);
+            return imageUrl;
 
         } catch (IOException e) {
+            log.error("Error reading image file: {}", e.getMessage());
             throw new RuntimeException("Rasmni o'qishda xatolik: " + e.getMessage(), e);
         } catch (Exception e) {
+            log.error("Error uploading image to ImgBB: {}", e.getMessage());
             throw new RuntimeException("ImgBB server bilan aloqa xatosi: " + e.getMessage(), e);
         }
     }
 
     private void validateImageFile(MultipartFile file) {
         if (file == null || file.isEmpty()) {
+            log.warn("Empty or null file upload attempt");
             throw new IllegalArgumentException("Fayl bo'sh yoki yuklanmagan");
         }
         if (file.getSize() > MAX_FILE_SIZE) {
+            log.warn("File size exceeds maximum: {} bytes (max: {} bytes)", file.getSize(), MAX_FILE_SIZE);
             throw new IllegalArgumentException("Fayl hajmi 5MB dan oshmasligi kerak");
         }
         String type = file.getContentType();
         if (type == null || !type.startsWith("image/")) {
+            log.warn("Invalid file type: {}", type);
             throw new IllegalArgumentException("Faqat rasm fayllari qabul qilinadi");
         }
     }

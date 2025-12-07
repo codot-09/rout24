@@ -12,7 +12,7 @@ import com.example.rout24.dto.ApiResponse;
 import com.example.rout24.dto.BannerDTO;
 import com.example.rout24.dto.response.BannerPreviewResponse;
 import com.example.rout24.service.BannerService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 

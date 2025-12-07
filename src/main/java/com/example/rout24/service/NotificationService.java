@@ -13,7 +13,9 @@ import com.example.rout24.entity.enums.NotificationType;
 import com.example.rout24.repository.NotificationRepository;
 import com.example.rout24.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
@@ -22,7 +24,7 @@ public class NotificationService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void sendNotification(User user, String title, String message,NotificationType type) {
+    public void sendNotification(User user, String title, String message, NotificationType type) {
         Notification notification = Notification.builder()
                 .title(title)
                 .message(message)
@@ -31,6 +33,7 @@ public class NotificationService {
                 .build();
 
         notificationRepository.save(notification);
+        log.debug("Notification sent to user {}: {}", user.getChatId(), title);
     }
 
     @Transactional(readOnly = true)
@@ -59,20 +62,27 @@ public class NotificationService {
     @Scheduled(cron = "0 0 0 * * *")
     @Transactional
     public void autoClearNotifications() {
+        log.info("Starting automatic notification cleanup");
         List<User> users = userRepository.findAll();
+        int totalDeleted = 0;
 
         for (User user : users) {
             List<Notification> notifications = notificationRepository.findByUserChatId(user.getChatId());
-
+            
             if (notifications.size() > 20) {
+                int deleteCount = notifications.size() - 20;
                 List<Notification> toDelete = notifications.stream()
                         .sorted(Comparator.comparing(Notification::getCreatedAt))
-                        .limit(notifications.size() - 20)
+                        .limit(deleteCount)
                         .toList();
 
                 notificationRepository.deleteAll(toDelete);
+                totalDeleted += deleteCount;
+                log.debug("Deleted {} notifications for user {}", deleteCount, user.getChatId());
             }
         }
+        
+        log.info("Automatic notification cleanup completed. Total deleted: {}", totalDeleted);
     }
 
     private NotificationResponse mapToResponse(Notification notification) {

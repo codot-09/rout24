@@ -19,13 +19,13 @@ public class Banner {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(nullable = false,length = 500)
     private String coverImage;
 
     @Column(nullable = false)
     private String title;
     
-    @Column(nullable = false)
+    @Column(nullable = false,length = 1000)
     private String description;
 
     private String externalLink;

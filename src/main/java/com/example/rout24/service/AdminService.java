@@ -9,6 +9,7 @@ import com.example.rout24.dto.ApiResponse;
 import com.example.rout24.dto.response.UnverifiedDriverInfoResponse;
 import com.example.rout24.entity.DriverInfo;
 import com.example.rout24.entity.enums.NotificationType;
+import com.example.rout24.entity.enums.RequestStatus;
 import com.example.rout24.exception.DataNotFoundException;
 import com.example.rout24.repository.DriverRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,11 +39,11 @@ public class AdminService {
         return ApiResponse.success(response);
     }
 
-    public ApiResponse<String> confirmRequest(UUID requestId,boolean status){
+    public ApiResponse<String> confirmRequest(UUID requestId,RequestStatus status){
         DriverInfo info = driverRepository.findById(requestId)
             .orElseThrow(() -> new DataNotFoundException("Malumot topilmadi"));
 
-        info.setVerified(status);
+        info.setStatus(status);
 
         driverRepository.save(info);
 

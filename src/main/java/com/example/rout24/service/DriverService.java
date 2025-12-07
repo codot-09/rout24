@@ -7,6 +7,7 @@ import com.example.rout24.entity.DriverInfo;
 import com.example.rout24.entity.User;
 import com.example.rout24.entity.Vehicle;
 import com.example.rout24.entity.enums.Gender;
+import com.example.rout24.entity.enums.RequestStatus;
 import com.example.rout24.exception.DataNotFoundException;
 import com.example.rout24.exception.InvalidRequestException;
 import com.example.rout24.repository.DriverRepository;
@@ -32,7 +33,7 @@ public class DriverService {
         }
         DriverInfo info = DriverInfo.builder()
                 .driver(driver)
-                .verified(false)
+                .status(RequestStatus.NOT_CONFIRMED)
                 .build();
         driverRepository.save(info);
         log.debug("Driver info created for: {}", driver.getChatId());
@@ -47,7 +48,7 @@ public class DriverService {
         DriverInfo info = driverRepository.findByDriverChatId(driver.getChatId())
                 .orElseThrow(() -> new DataNotFoundException("Malumotlar topilmadi"));
 
-        if (info.isVerified()) {
+        if (info.getStatus().equals(RequestStatus.CONFIRMED)) {
             throw new InvalidRequestException("Profil allaqachon tasdiqlangan");
         }
 
@@ -84,7 +85,7 @@ public class DriverService {
         response.setFullName(driver.getFullName());
         response.setImageUrl(driver.getImageUrl());
         response.setPremiumUser(driver.isPremiumUser());
-        response.setStatus(info.isVerified());
+        response.setStatus(info.getStatus().name());
         
         if (vehicle != null) {
             response.setPlateNumber(vehicle.getPlateNumber());
@@ -96,10 +97,10 @@ public class DriverService {
         return ApiResponse.success(response);
     }
 
-    @Transactional(readOnly = true)
+   @Transactional(readOnly = true)
     public boolean checkAVerified(User driver) {
         return driverRepository.findByDriverChatId(driver.getChatId())
-                .map(DriverInfo::isVerified)
+                .map(driverInfo -> driverInfo.getStatus().equals(RequestStatus.CONFIRMED))
                 .orElse(false);
     }
 }

@@ -1,9 +1,9 @@
 package com.example.rout24.entity;
 
 import com.example.rout24.entity.enums.Gender;
+import com.example.rout24.entity.enums.RequestStatus;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -36,5 +36,6 @@ public class DriverInfo {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    private boolean verified;
+    @Enumerated(EnumType.STRING)
+    private RequestStatus status;
 }

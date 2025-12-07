@@ -13,7 +13,7 @@ public class DriverProfileResponse {
 
     private String fullName;
     private String imageUrl;
-    private Boolean status;
+    private String status;
     private Boolean premiumUser;
     private String plateNumber;
     private String coverImage;

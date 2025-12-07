@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.rout24.dto.ApiResponse;
 import com.example.rout24.dto.response.UnverifiedDriverInfoResponse;
+import com.example.rout24.entity.enums.RequestStatus;
 import com.example.rout24.service.AdminService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,7 +45,7 @@ public class AdminController {
     @PatchMapping("/{requestId}")
     public ResponseEntity<ApiResponse<String>> confirmRequest(
         @PathVariable UUID requestId,
-        @RequestParam boolean status
+        @RequestParam RequestStatus status
     ){
         return ResponseEntity.ok(adminService.confirmRequest(requestId, status));
     }

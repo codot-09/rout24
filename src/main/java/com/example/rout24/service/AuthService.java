@@ -43,6 +43,7 @@ public class AuthService {
         LoginResponse response = new LoginResponse();
         response.setTokenType("Bearer");
         response.setToken(token);
+        response.setRole(user.getRole() != null ? user.getRole().name() : null);
 
         return ApiResponse.success(response);
     }

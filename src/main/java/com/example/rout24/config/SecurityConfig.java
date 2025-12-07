@@ -29,13 +29,6 @@ public class SecurityConfig {
     private final JwtProvider jwtProvider;
     private final UserDetailsService userDetailsService;
 
-    private final List<String> whiteList = List.of(
-            "/auth/**",
-            "/swagger-ui/**",
-            "/v3/api-docs/**",
-            "/swagger-ui.html"
-    );
-
     @Bean
     public JwtFilter jwtFilter() {
         return new JwtFilter(jwtProvider, userDetailsService);
@@ -56,11 +49,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().and()
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(whiteList.toArray(new String[0])).permitAll()
+                    .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                     .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);

@@ -6,6 +6,8 @@ import com.example.rout24.dto.response.DriverProfileResponse;
 import com.example.rout24.dto.response.ProfileResponse;
 import com.example.rout24.entity.User;
 import com.example.rout24.service.DriverService;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/drivers")
 @RequiredArgsConstructor
+@Tag(name = "Haydovchi")
 public class DriverController {
 
     private final DriverService driverService;

@@ -4,6 +4,8 @@ import com.example.rout24.dto.ApiResponse;
 import com.example.rout24.dto.response.NotificationResponse;
 import com.example.rout24.entity.User;
 import com.example.rout24.service.NotificationService;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/notifications")
 @RequiredArgsConstructor
+@Tag(name = "Bildirishnoma")
 public class NotificationController {
 
     private final NotificationService notificationService;

@@ -3,7 +3,6 @@ package com.example.rout24.service;
 import com.example.rout24.dto.ApiResponse;
 import com.example.rout24.dto.request.DriverInfoRequest;
 import com.example.rout24.dto.response.DriverProfileResponse;
-import com.example.rout24.dto.response.ProfileResponse;
 import com.example.rout24.entity.DriverInfo;
 import com.example.rout24.entity.User;
 import com.example.rout24.entity.Vehicle;

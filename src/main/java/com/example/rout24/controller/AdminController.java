@@ -18,11 +18,14 @@ import org.springframework.web.service.annotation.PatchExchange;
 import com.example.rout24.dto.ApiResponse;
 import com.example.rout24.dto.response.UnverifiedDriverInfoResponse;
 import com.example.rout24.service.AdminService;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
+@Tag(name = "Admin")
 public class AdminController {
 
     private final AdminService adminService;

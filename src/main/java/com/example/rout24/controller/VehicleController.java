@@ -5,6 +5,8 @@ import com.example.rout24.dto.request.VehicleRequest;
 import com.example.rout24.dto.response.VehicleResponse;
 import com.example.rout24.entity.User;
 import com.example.rout24.service.VehicleService;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/vehicles")
 @RequiredArgsConstructor
+@Tag(name = "Transport")
 public class VehicleController {
 
     private final VehicleService vehicleService;

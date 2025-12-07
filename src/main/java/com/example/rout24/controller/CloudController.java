@@ -1,6 +1,8 @@
 package com.example.rout24.controller;
 
 import com.example.rout24.service.CloudService;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/upload")
 @RequiredArgsConstructor
+@Tag(name = "File yuklash")
 public class CloudController {
 
     private final CloudService cloudService;

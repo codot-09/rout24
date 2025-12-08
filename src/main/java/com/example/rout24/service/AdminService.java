@@ -1,7 +1,10 @@
 package com.example.rout24.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
+
+import com.example.rout24.dto.response.PagedResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,22 +24,32 @@ public class AdminService {
     private final DriverRepository driverRepository;
     private final NotificationService notificationService;
 
-    public ApiResponse<Page<UnverifiedDriverInfoResponse>> getUnverifiedRequests(LocalDate from, LocalDate to, String userId, Pageable pageable) {
+    public ApiResponse<PagedResponse<UnverifiedDriverInfoResponse>> getUnverifiedRequests(
+            LocalDate from, LocalDate to, String userId, Pageable pageable) {
+
         Page<DriverInfo> driverInfos = driverRepository.findUnverifiedDriverInfos(from, to, userId, pageable);
-        
-        Page<UnverifiedDriverInfoResponse> response = driverInfos.map(driverInfo -> {
-            UnverifiedDriverInfoResponse unverifiedResponse = new UnverifiedDriverInfoResponse();
-            unverifiedResponse.setId(driverInfo.getId());
-            unverifiedResponse.setDriverName(driverInfo.getDriver().getFullName());
-            unverifiedResponse.setDriverContact(driverInfo.getDriver().getChatId());
-            unverifiedResponse.setDriverLicense(driverInfo.getDriverLicense());
-            unverifiedResponse.setPassportId(driverInfo.getPassportId());
-            unverifiedResponse.setBirthDate(driverInfo.getBirthDate());
-            unverifiedResponse.setGender(driverInfo.getGender() != null ? driverInfo.getGender().name() : null);
-            return unverifiedResponse;
-        });
-        
-        return ApiResponse.success(response);
+
+        List<UnverifiedDriverInfoResponse> content = driverInfos.getContent().stream().map(driverInfo -> {
+            UnverifiedDriverInfoResponse response = new UnverifiedDriverInfoResponse();
+            response.setId(driverInfo.getId());
+            response.setDriverName(driverInfo.getDriver().getFullName());
+            response.setDriverContact(driverInfo.getDriver().getChatId());
+            response.setDriverLicense(driverInfo.getDriverLicense());
+            response.setPassportId(driverInfo.getPassportId());
+            response.setBirthDate(driverInfo.getBirthDate());
+            response.setGender(driverInfo.getGender() != null ? driverInfo.getGender().name() : null);
+            return response;
+        }).toList();
+
+        PagedResponse<UnverifiedDriverInfoResponse> pagedResponse = new PagedResponse<>();
+        pagedResponse.setContent(content);
+        pagedResponse.setPageNumber(driverInfos.getNumber());
+        pagedResponse.setPageSize(driverInfos.getSize());
+        pagedResponse.setTotalElements(driverInfos.getTotalElements());
+        pagedResponse.setTotalPages(driverInfos.getTotalPages());
+        pagedResponse.setLast(driverInfos.isLast());
+
+        return ApiResponse.success(pagedResponse);
     }
 
     public ApiResponse<String> confirmRequest(UUID requestId,RequestStatus status){

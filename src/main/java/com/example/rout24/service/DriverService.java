@@ -54,7 +54,7 @@ public class DriverService {
 
         Gender gender;
         try {
-            gender = Gender.valueOf(request.getGender().toUpperCase());
+            gender = request.getGender();
         } catch (IllegalArgumentException e) {
             throw new InvalidRequestException("Noto'g'ri jins: " + request.getGender());
         }

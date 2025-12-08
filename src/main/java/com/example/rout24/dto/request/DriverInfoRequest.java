@@ -1,17 +1,12 @@
 package com.example.rout24.dto.request;
 
+import com.example.rout24.entity.enums.Gender;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class DriverInfoRequest {
 
     @NotBlank(message = "Haydovchilik guvohnomasi bo'sh bo'lishi mumkin emas")
@@ -22,7 +17,6 @@ public class DriverInfoRequest {
     
     @NotNull(message = "Tug'ilgan sana bo'sh bo'lishi mumkin emas")
     private LocalDate birthDate;
-    
-    @NotBlank(message = "Jins bo'sh bo'lishi mumkin emas")
-    private String gender;
+
+    private Gender gender;
 }

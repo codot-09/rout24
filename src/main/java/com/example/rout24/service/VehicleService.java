@@ -42,7 +42,7 @@ public class VehicleService {
 
         VehicleType type;
         try {
-            type = VehicleType.valueOf(request.getType().toUpperCase());
+            type = request.getType();
         } catch (IllegalArgumentException e) {
             throw new InvalidRequestException("Noto'g'ri mashina turi: " + request.getType());
         }

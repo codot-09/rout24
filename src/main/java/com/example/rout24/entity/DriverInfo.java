@@ -13,10 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "driver_infos", indexes = {
-    @Index(name = "idx_driver_chat_id", columnList = "driver_chat_id"),
-    @Index(name = "idx_verified", columnList = "verified")
-})
+@Table(name = "driver_infos")
 public class DriverInfo {
 
     @Id

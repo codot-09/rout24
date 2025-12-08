@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/banners")
 @RequiredArgsConstructor
-@Tag(name = "Bannerlar")
+@Tag(name = "Banner")
 public class BannerController {
 
     private final BannerService bannerService;

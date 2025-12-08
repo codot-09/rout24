@@ -3,6 +3,7 @@ package com.example.rout24.controller;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import com.example.rout24.dto.response.PagedResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +32,7 @@ public class AdminController {
     private final AdminService adminService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<UnverifiedDriverInfoResponse>>> getUnverifiedRequests(
+    public ResponseEntity<ApiResponse<PagedResponse<UnverifiedDriverInfoResponse>>> getUnverifiedRequests(
         @RequestParam(required = false) LocalDate from,
         @RequestParam(required = false) LocalDate to,
         @RequestParam(required = false) String id,

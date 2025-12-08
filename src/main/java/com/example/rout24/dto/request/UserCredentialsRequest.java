@@ -1,15 +1,9 @@
 package com.example.rout24.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class UserCredentialsRequest {
 
     @NotBlank(message = "To'liq ism bo'sh bo'lishi mumkin emas")

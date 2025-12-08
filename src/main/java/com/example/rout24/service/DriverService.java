@@ -63,6 +63,7 @@ public class DriverService {
         info.setPassportId(request.getPassportId());
         info.setGender(gender);
         info.setBirthDate(request.getBirthDate());
+        info.setStatus(RequestStatus.PENDING);
 
         driverRepository.save(info);
         log.debug("Driver profile finished for: {}", driver.getChatId());

@@ -16,14 +16,18 @@ import java.util.UUID;
 public interface DriverRepository extends JpaRepository<DriverInfo, UUID> {
     Optional<DriverInfo> findByDriverChatId(String driverId);
     
-    @Query("SELECT d FROM DriverInfo d WHERE d.verified = false " +
-           "AND (:from IS NULL OR d.driver.registeredAt >= :from) " +
-           "AND (:to IS NULL OR d.driver.registeredAt <= :to) " +
-           "AND (:userId IS NULL OR d.driver.chatId = :userId)")
+    @Query("""
+    SELECT d FROM DriverInfo d
+    WHERE d.status = com.example.rout24.entity.enums.RequestStatus.PENDING
+    AND (:from IS NULL OR d.driver.registeredAt >= :from)
+    AND (:to IS NULL OR d.driver.registeredAt <= :to)
+    AND (:userId IS NULL OR d.driver.chatId = :userId)
+    """)
     Page<DriverInfo> findUnverifiedDriverInfos(
-        @Param("from") LocalDate from,
-        @Param("to") LocalDate to,
-        @Param("userId") String userId,
-        Pageable pageable
+            @Param("from") LocalDate from,
+            @Param("to") LocalDate to,
+            @Param("userId") String userId,
+            Pageable pageable
     );
+
 }

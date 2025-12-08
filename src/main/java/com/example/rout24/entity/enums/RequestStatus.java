@@ -5,6 +5,6 @@ public enum RequestStatus {
     NOT_CONFIRMED,
     CONFIRMED,
     REJECTED,
-    WAITING
+    PENDING
 
 }

@@ -14,6 +14,6 @@ import com.example.rout24.entity.Route;
 public interface RouteRepository extends JpaRepository<Route,UUID>, JpaSpecificationExecutor<Route> {
 
     List<Route> findAllByFinishedFalseAndDepartureDateBefore(LocalDate date);
-    int countByUser(User user);
+    int countByDriver(User driver);
 
 }

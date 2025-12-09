@@ -3,6 +3,7 @@ package com.example.rout24.repository;
 import com.example.rout24.entity.Order;
 import com.example.rout24.entity.Route;
 import com.example.rout24.entity.User;
+import com.example.rout24.entity.enums.PaymentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -22,11 +23,17 @@ public interface OrderRepository extends JpaRepository<Order, UUID>, JpaSpecific
 
     int countByClient(User client);
 
-    int countByRoute_User(User driver);
+    int countByRoute_Driver(User driver);
 
-    @Query("SELECT COALESCE(SUM(o.price), 0) FROM Order o WHERE o.client = :client AND o.paymentStatus = 'PAID' AND o.orderDate BETWEEN :start AND :end")
-    BigDecimal sumClientMonthlyExpense(@Param("client") User client, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+    @Query("SELECT COALESCE(SUM(o.price), 0) FROM Order o WHERE o.client = :client AND o.paymentStatus = :status AND o.orderDate BETWEEN :start AND :end")
+    BigDecimal sumClientMonthlyExpense(@Param("client") User client,
+                                       @Param("status") PaymentStatus status,
+                                       @Param("start") LocalDateTime start,
+                                       @Param("end") LocalDateTime end);
 
-    @Query("SELECT COALESCE(SUM(o.price), 0) FROM Order o WHERE o.route.user = :driver AND o.paymentStatus = 'PAID' AND o.orderDate BETWEEN :start AND :end")
-    BigDecimal sumDriverMonthlyIncome(@Param("driver") User driver, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+    @Query("SELECT COALESCE(SUM(o.price), 0) FROM Order o WHERE o.route.driver = :driver AND o.paymentStatus = :status AND o.orderDate BETWEEN :start AND :end")
+    BigDecimal sumDriverMonthlyIncome(@Param("driver") User driver,
+                                      @Param("status") PaymentStatus status,
+                                      @Param("start") LocalDateTime start,
+                                      @Param("end") LocalDateTime end);
 }

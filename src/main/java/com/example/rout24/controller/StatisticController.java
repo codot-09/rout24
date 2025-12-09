@@ -4,6 +4,7 @@ import com.example.rout24.dto.ApiResponse;
 import com.example.rout24.dto.response.UserStatisticResponse;
 import com.example.rout24.entity.User;
 import com.example.rout24.service.StatisticService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/statistics")
 @RequiredArgsConstructor
+@Tag(name = "Statistika")
 public class StatisticController {
 
     private final StatisticService statisticService;

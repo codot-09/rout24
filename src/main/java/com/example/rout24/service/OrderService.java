@@ -9,6 +9,7 @@ import com.example.rout24.entity.Order;
 import com.example.rout24.entity.Route;
 import com.example.rout24.entity.User;
 import com.example.rout24.entity.enums.OrderStatus;
+import com.example.rout24.entity.enums.PaymentStatus;
 import com.example.rout24.entity.enums.Regions;
 import com.example.rout24.exception.DataNotFoundException;
 import com.example.rout24.exception.InvalidRequestException;
@@ -34,6 +35,7 @@ public class OrderService {
     private final BillingNumberSeqRepository billingNumberSeqRepository;
     private final QRCodeService qrCodeService;
 
+    @Transactional
     public ApiResponse<String> createOrder(User client, OrderCreateRequest request){
         Route route = routeRepository.findById(request.getRoutId())
                 .orElseThrow(() -> new DataNotFoundException("Reys topilmadi"));
@@ -60,9 +62,13 @@ public class OrderService {
                 .qrCode(qrCodeService.generateQRCodeUrl(billingNumber))
                 .billingNumber(billingNumber)
                 .status(OrderStatus.WAITING)
+                .paymentStatus(PaymentStatus.UNPAID)
                 .build();
 
         orderRepository.save(order);
+
+        route.setSeatsCount(route.getSeatsCount() - request.getSeatsCount());
+        routeRepository.save(route);
 
         return ApiResponse.success(null,"Buyurtma qabul qilindi");
     }
@@ -80,7 +86,7 @@ public class OrderService {
             response.setClientName(order.getClient() != null ? order.getClient().getFullName() : null);
             response.setPrice(order.getPrice());
             response.setOrderDate(order.getOrderDate());
-            response.setPaid(order.isPaid());
+            response.setPaymentStatus(order.getPaymentStatus());
             response.setBillingNumber(order.getBillingNumber());
             response.setPaymentType(order.getPaymentType() != null ? order.getPaymentType() : null);
             response.setQrCode(order.getQrCode());
@@ -89,7 +95,7 @@ public class OrderService {
             return response;
         }).toList();
 
-        return ApiResponse.success(content, "Buyurtmalar topildi");
+        return ApiResponse.success(content);
     }
 
     @Transactional(readOnly = true)
@@ -115,7 +121,35 @@ public class OrderService {
         pagedResponse.setTotalPages(ordersPage.getTotalPages());
         pagedResponse.setLast(ordersPage.isLast());
 
-        return ApiResponse.success(pagedResponse, "Buyurtmalar topildi");
+        return ApiResponse.success(pagedResponse);
+    }
+
+    @Transactional
+    public ApiResponse<String> cancelOrder(UUID id){
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Buyurtma topilmadi"));
+
+        order.setStatus(OrderStatus.CANCELED);
+        order.setPaymentStatus(PaymentStatus.REFUNDED);
+        orderRepository.save(order);
+
+        Route route = order.getRoute();
+
+        route.setSeatsCount(route.getSeatsCount() + order.getSeatsCount());
+        routeRepository.save(route);
+
+        return ApiResponse.success(null,"Buyurtma bekor qilindi");
+    }
+
+    public ApiResponse<String> verifyOrder(Integer billingNumber){
+        Order order = orderRepository.findByBillingNumber(billingNumber)
+                .orElseThrow(() -> new DataNotFoundException("Buyurtma topilmadi"));
+
+        order.setPaymentStatus(PaymentStatus.PAID);
+        order.setStatus(OrderStatus.FINISHED);
+        orderRepository.save(order);
+
+        return ApiResponse.success(null,"Buyurtma tasdiqlandi");
     }
 
     private OrderResponse mapToResponse(Order order) {
@@ -124,7 +158,7 @@ public class OrderService {
         response.setClientName(order.getClient() != null ? order.getClient().getFullName() : null);
         response.setPrice(order.getPrice());
         response.setOrderDate(order.getOrderDate());
-        response.setPaid(order.isPaid());
+        response.setPaymentStatus(order.getPaymentStatus());
         response.setBillingNumber(order.getBillingNumber());
         response.setPaymentType(order.getPaymentType() != null ? order.getPaymentType() : null);
         response.setQrCode(order.getQrCode());

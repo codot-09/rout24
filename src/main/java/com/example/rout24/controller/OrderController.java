@@ -59,4 +59,14 @@ public class OrderController {
         Pageable pageable = PageRequest.of(page,size);
         return orderService.getOwnOrders(client, from,to,status, pageable);
     }
+
+    @PatchMapping("/verify/{billingNumber}")
+    public ResponseEntity<ApiResponse<String>> verifyOrder(@PathVariable Integer billingNumber) {
+        return ResponseEntity.ok(orderService.verifyOrder(billingNumber));
+    }
+
+    @PatchMapping("/cancel/{id}")
+    public ResponseEntity<ApiResponse<String>> cancelOrder(@PathVariable UUID id) {
+        return ResponseEntity.ok(orderService.cancelOrder(id));
+    }
 }

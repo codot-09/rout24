@@ -1,6 +1,7 @@
 package com.example.rout24.dto.response;
 
 import com.example.rout24.entity.enums.OrderStatus;
+import com.example.rout24.entity.enums.PaymentStatus;
 import com.example.rout24.entity.enums.PaymentType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,7 @@ public class OrderResponse {
     private Integer billingNumber;
     private String qrCode;
     private LocalDateTime orderDate;
-    private boolean paid;
+    private PaymentStatus paymentStatus;
     private PaymentType paymentType;
     private UUID routeId;
     private BigDecimal price;

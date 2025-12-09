@@ -1,6 +1,7 @@
 package com.example.rout24.entity;
 
 import com.example.rout24.entity.enums.OrderStatus;
+import com.example.rout24.entity.enums.PaymentStatus;
 import com.example.rout24.entity.enums.PaymentType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -47,5 +48,5 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;
 
-    private boolean paid;
+    private PaymentStatus paymentStatus;
 }

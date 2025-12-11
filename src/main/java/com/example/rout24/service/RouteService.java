@@ -128,7 +128,7 @@ public class RouteService {
         if (route.getDriver() != null) {
             response.setDriverId(route.getDriver().getChatId());
             response.setDriverFullName(route.getDriver().getFullName());
-            response.setDriverContact(route.getDriver().getChatId());
+            response.setDriverContact(route.getDriver().getTgUsername());
         }
 
         return ApiResponse.success(response);

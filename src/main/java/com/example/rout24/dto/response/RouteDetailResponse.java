@@ -14,10 +14,6 @@ public class RouteDetailResponse {
     private Regions to;
     private String fromAddress;
     private String toAddress;
-    private Double fromLat;
-    private Double fromLng;
-    private Double toLat;
-    private Double toLng;
     private BigDecimal price;
     private int seatsCount;
     private LocalDateTime departureDate;

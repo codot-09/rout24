@@ -11,12 +11,8 @@ public class RouteCreateRequest {
     private Regions from;
     private Regions to;
 
-    private Double fromLat;
-    private Double fromLng;
     private String fromAddress;
 
-    private Double toLat;
-    private Double toLng;
     private String toAddress;
 
     private int seatsCount;

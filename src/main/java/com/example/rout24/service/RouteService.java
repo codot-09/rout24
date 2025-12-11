@@ -44,12 +44,8 @@ public class RouteService {
                 .driver(driver)
                 .price(request.getPrice())
                 .seatsCount(request.getSeatsCount())
-                .fromLat(request.getFromLat())
-                .toLat(request.getToLat())
                 .fromAddress(request.getFromAddress())
                 .toAddress(request.getToAddress())
-                .fromLng(request.getFromLng())
-                .toLng(request.getToLng())
                 .departureDate(request.getDepartureDate())
                 .vehicle(vehicle)
                 .build();
@@ -108,10 +104,6 @@ public class RouteService {
         response.setTo(route.getToRegion());
         response.setFromAddress(route.getFromAddress());
         response.setToAddress(route.getToAddress());
-        response.setFromLat(route.getFromLat());
-        response.setFromLng(route.getFromLng());
-        response.setToLat(route.getToLat());
-        response.setToLng(route.getToLng());
         response.setPrice(route.getPrice());
         response.setSeatsCount(route.getSeatsCount());
         response.setDepartureDate(route.getDepartureDate());
@@ -128,7 +120,7 @@ public class RouteService {
         if (route.getDriver() != null) {
             response.setDriverId(route.getDriver().getChatId());
             response.setDriverFullName(route.getDriver().getFullName());
-            response.setDriverContact(route.getDriver().getChatId());
+            response.setDriverContact(route.getDriver().getUsername());
         }
 
         return ApiResponse.success(response);

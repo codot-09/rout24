@@ -41,14 +41,8 @@ public class Route {
     @Enumerated(EnumType.STRING)
     private Regions toRegion;
 
-    private Double fromLat;
-    private Double fromLng;
-
     @Column(nullable = false)
     private String fromAddress;
-
-    private Double toLat;
-    private Double toLng;
 
     @Column(nullable = false)
     private String toAddress;

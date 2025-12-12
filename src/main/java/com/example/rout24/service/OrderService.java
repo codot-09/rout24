@@ -141,15 +141,24 @@ public class OrderService {
         return ApiResponse.success(null,"Buyurtma bekor qilindi");
     }
 
-    public ApiResponse<String> verifyOrder(Integer billingNumber){
-        Order order = orderRepository.findByBillingNumber(billingNumber)
-                .orElseThrow(() -> new DataNotFoundException("Buyurtma topilmadi"));
+    public ApiResponse<String> verifyOrder(Object param) {
+        Order order;
+
+        if (param instanceof Integer billingNumber) {
+            order = orderRepository.findByBillingNumber(billingNumber)
+                    .orElseThrow(() -> new DataNotFoundException("Buyurtma topilmadi"));
+        } else if (param instanceof String qrCode) {
+            order = orderRepository.findByQrCode(qrCode)
+                    .orElseThrow(() -> new DataNotFoundException("Buyurtma topilmadi"));
+        } else {
+            throw new IllegalArgumentException("Param faqat Integer yoki String bo'lishi mumkin");
+        }
 
         order.setPaymentStatus(PaymentStatus.PAID);
         order.setStatus(OrderStatus.FINISHED);
         orderRepository.save(order);
 
-        return ApiResponse.success(null,"Buyurtma tasdiqlandi");
+        return ApiResponse.success(null, "Buyurtma tasdiqlandi");
     }
 
     private OrderResponse mapToResponse(Order order) {

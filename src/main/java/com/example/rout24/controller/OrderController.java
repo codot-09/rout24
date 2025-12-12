@@ -29,13 +29,6 @@ import java.util.UUID;
 public class OrderController {
 
     private final OrderService orderService;
-    private final QRCodeService qrCodeService;
-
-    @PostMapping(value = "/decode", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ApiResponse<Integer>> decode(@RequestParam("file") MultipartFile file) {
-        Integer billingNumber = qrCodeService.parseQRCode(file);
-        return ResponseEntity.ok(ApiResponse.success(billingNumber));
-    }
 
     @PostMapping("/create")
     public ApiResponse<String> createOrder(@RequestBody OrderCreateRequest request, @AuthenticationPrincipal User client) {
@@ -60,9 +53,9 @@ public class OrderController {
         return orderService.getOwnOrders(client, from,to,status, pageable);
     }
 
-    @PatchMapping("/verify/{billingNumber}")
-    public ResponseEntity<ApiResponse<String>> verifyOrder(@PathVariable Integer billingNumber) {
-        return ResponseEntity.ok(orderService.verifyOrder(billingNumber));
+    @PatchMapping("/verify/{param}")
+    public ResponseEntity<ApiResponse<String>> verifyOrder(@PathVariable Object param) {
+        return ResponseEntity.ok(orderService.verifyOrder(param));
     }
 
     @PatchMapping("/cancel/{id}")

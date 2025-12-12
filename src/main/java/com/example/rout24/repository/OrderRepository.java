@@ -20,6 +20,7 @@ public interface OrderRepository extends JpaRepository<Order, UUID>, JpaSpecific
     boolean existsByRoute(Route route);
     List<Order> findAllByRoute(Route route);
     Optional<Order> findByBillingNumber(Integer billingNumber);
+    Optional<Order> findByQrCode(String qrCode);
 
     int countByClient(User client);
 

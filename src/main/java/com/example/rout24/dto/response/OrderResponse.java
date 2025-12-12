@@ -17,6 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class OrderResponse {
 
+    private UUID id;
     private Integer billingNumber;
     private String qrCode;
     private LocalDateTime orderDate;

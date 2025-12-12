@@ -154,6 +154,7 @@ public class OrderService {
 
     private OrderResponse mapToResponse(Order order) {
         OrderResponse response = new OrderResponse();
+        response.setId(order.getId());
         response.setSeatsCount(order.getSeatsCount());
         response.setClientName(order.getClient() != null ? order.getClient().getFullName() : null);
         response.setPrice(order.getPrice());

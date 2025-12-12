@@ -53,9 +53,9 @@ public class OrderController {
         return orderService.getOwnOrders(client, from,to,status, pageable);
     }
 
-    @PatchMapping("/verify/{param}")
-    public ResponseEntity<ApiResponse<String>> verifyOrder(@PathVariable Object param) {
-        return ResponseEntity.ok(orderService.verifyOrder(param));
+    @PatchMapping("/verify/{billingNumber}")
+    public ResponseEntity<ApiResponse<String>> verifyOrder(@PathVariable Integer billingNumber) {
+        return ResponseEntity.ok(orderService.verifyOrder(billingNumber));
     }
 
     @PatchMapping("/cancel/{id}")

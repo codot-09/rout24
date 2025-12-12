@@ -152,6 +152,17 @@ public class OrderService {
         return ApiResponse.success(null,"Buyurtma tasdiqlandi");
     }
 
+    public ApiResponse<String> verifyOrderQr(String qr){
+        Order order = orderRepository.findByQrCode(qr)
+                .orElseThrow(() -> new DataNotFoundException("Buyurtma topilmadi"));
+
+        order.setPaymentStatus(PaymentStatus.PAID);
+        order.setStatus(OrderStatus.FINISHED);
+        orderRepository.save(order);
+
+        return ApiResponse.success(null,"Buyurtma tasdiqlandi");
+    }
+
     private OrderResponse mapToResponse(Order order) {
         OrderResponse response = new OrderResponse();
         response.setId(order.getId());

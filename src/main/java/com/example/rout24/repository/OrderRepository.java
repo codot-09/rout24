@@ -22,7 +22,7 @@ public interface OrderRepository extends JpaRepository<Order, UUID>, JpaSpecific
     List<Order> findAllByRoute(Route route);
     Optional<Order> findByBillingNumber(Integer billingNumber);
 
-    List<Order> findByOrderStatus(OrderStatus status);
+    List<Order> findByStatus(OrderStatus status);
 
     int countByClient(User client);
 

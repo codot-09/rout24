@@ -51,7 +51,7 @@ public class NotificationService {
 
     @Scheduled(fixedRate = 60000)
     public void sendNotification() {
-        List<Order> orders = orderRepository.findByOrderStatus(OrderStatus.WAITING);
+        List<Order> orders = orderRepository.findByStatus(OrderStatus.WAITING);
         LocalDateTime now = LocalDateTime.now();
 
         for (Order order : orders) {

@@ -21,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
@@ -34,6 +33,7 @@ public class OrderService {
     private final RouteRepository routeRepository;
     private final BillingNumberSeqRepository billingNumberSeqRepository;
     private final QRCodeService qrCodeService;
+    private final NotificationService notificationService;
 
     @Transactional
     public ApiResponse<String> createOrder(User client, OrderCreateRequest request){
@@ -69,6 +69,8 @@ public class OrderService {
 
         route.setSeatsCount(route.getSeatsCount() - request.getSeatsCount());
         routeRepository.save(route);
+
+        notificationService.sendDriverNotification(order.getRoute().getDriver().getChatId(),"Sizga yangi buyurtma keldi: https://rout24.online/route/credentials?id=" + order.getRoute().getId());
 
         return ApiResponse.success(null,"Buyurtma qabul qilindi");
     }
@@ -141,7 +143,7 @@ public class OrderService {
         return ApiResponse.success(null,"Buyurtma bekor qilindi");
     }
 
-    public ApiResponse<String> verifyOrder(Integer billingNumber){
+    public ApiResponse<String> verifyOrder(Integer billingNumber) {
         Order order = orderRepository.findByBillingNumber(billingNumber)
                 .orElseThrow(() -> new DataNotFoundException("Buyurtma topilmadi"));
 
@@ -149,18 +151,7 @@ public class OrderService {
         order.setStatus(OrderStatus.FINISHED);
         orderRepository.save(order);
 
-        return ApiResponse.success(null,"Buyurtma tasdiqlandi");
-    }
-
-    public ApiResponse<String> verifyOrderQr(String qr){
-        Order order = orderRepository.findByQrCode(qr)
-                .orElseThrow(() -> new DataNotFoundException("Buyurtma topilmadi"));
-
-        order.setPaymentStatus(PaymentStatus.PAID);
-        order.setStatus(OrderStatus.FINISHED);
-        orderRepository.save(order);
-
-        return ApiResponse.success(null,"Buyurtma tasdiqlandi");
+        return ApiResponse.success(null, "Buyurtma tasdiqlandi");
     }
 
     private OrderResponse mapToResponse(Order order) {

@@ -58,11 +58,6 @@ public class OrderController {
         return ResponseEntity.ok(orderService.verifyOrder(billingNumber));
     }
 
-    @PatchMapping("/verify/qr")
-    public ResponseEntity<ApiResponse<String>> verifyOrderWithQr(@RequestParam String qr) {
-        return ResponseEntity.ok(orderService.verifyOrderQr(qr));
-    }
-
     @PatchMapping("/cancel/{id}")
     public ResponseEntity<ApiResponse<String>> cancelOrder(@PathVariable UUID id) {
         return ResponseEntity.ok(orderService.cancelOrder(id));

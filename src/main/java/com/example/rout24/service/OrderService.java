@@ -44,7 +44,7 @@ public class OrderService {
             throw new InvalidRequestException("Reys to'lgan");
         }
 
-        if (orderRepository.existsByRoute(route)){
+        if (orderRepository.existsByRouteAndClient(route,client)){
             throw new InvalidRequestException("Oldin zakaz qilingan");
         }
 

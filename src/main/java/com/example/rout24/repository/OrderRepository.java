@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, UUID>, JpaSpecificationExecutor<Order> {
-    boolean existsByRoute(Route route);
+    boolean existsByRouteAndClient(Route route,User client);
     List<Order> findAllByRoute(Route route);
     Optional<Order> findByBillingNumber(Integer billingNumber);
     Optional<Order> findByQrCode(String qrCode);

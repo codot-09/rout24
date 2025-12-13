@@ -73,16 +73,23 @@ public class RouteService {
     ) {
         boolean hasFilter = from != null || to != null || minPrice != null || maxPrice != null || departureDate != null;
 
-        Specification<Route> spec;
+        Specification<Route> spec = (root, query, cb) -> cb.and(
+                cb.isFalse(root.get("finished")),
+                cb.greaterThan(root.get("seatsCount"), 0)
+        );
+
         if (hasFilter) {
-            spec = RouteSpecification.globalFilter(from, to, minPrice, maxPrice, departureDate);
-        } else {
-            spec = (root, query, cb) -> cb.isFalse(root.get("finished"));
+            spec = spec.and(
+                    RouteSpecification.globalFilter(from, to, minPrice, maxPrice, departureDate)
+            );
         }
 
         Page<Route> routePage = routeRepository.findAll(spec, pageable);
 
-        List<RouteViewResponse> content = routePage.getContent().stream().map(r -> mapToResponse(r)).toList();
+        List<RouteViewResponse> content = routePage.getContent()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
 
         PagedResponse<RouteViewResponse> pagedResponse = new PagedResponse<>();
         pagedResponse.setContent(content);

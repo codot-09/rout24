@@ -45,6 +45,11 @@ public class RouteController {
         return ResponseEntity.ok(routeService.getOwnRoutes(driver, from,to));
     }
 
+    @PatchMapping("/finish/{routeId}")
+    public ResponseEntity<ApiResponse<String>> finishRoute(@PathVariable UUID routeId){
+        return ResponseEntity.ok(routeService.finishRoute(routeId));
+    }
+
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<PagedResponse<RouteViewResponse>>> getRoutes(
             @RequestParam(required = false) Regions from,

@@ -18,11 +18,11 @@ public class RouteSpecification {
             predicates.add(cb.equal(root.get("driver"), driver));
 
             if (from != null) {
-                predicates.add(cb.equal(root.get("from"), from));
+                predicates.add(cb.equal(root.get("fromRegion"), from));
             }
 
             if (to != null) {
-                predicates.add(cb.equal(root.get("to"), to));
+                predicates.add(cb.equal(root.get("toRegion"), to));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));
@@ -41,11 +41,11 @@ public class RouteSpecification {
             predicates.add(cb.isFalse(root.get("finished")));
 
             if (from != null) {
-                predicates.add(cb.equal(root.get("from"), from));
+                predicates.add(cb.equal(root.get("fromRegion"), from));
             }
 
             if (to != null) {
-                predicates.add(cb.equal(root.get("to"), to));
+                predicates.add(cb.equal(root.get("toRegion"), to));
             }
 
             if (minPrice != null) {

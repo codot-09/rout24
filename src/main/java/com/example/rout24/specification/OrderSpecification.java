@@ -24,11 +24,11 @@ public class OrderSpecification {
             }
 
             if (from != null) {
-                predicates.add(cb.equal(root.get("route").get("from"), from));
+                predicates.add(cb.equal(root.get("route").get("fromRegion"), from));
             }
 
             if (to != null) {
-                predicates.add(cb.equal(root.get("route").get("to"), to));
+                predicates.add(cb.equal(root.get("route").get("toRegion"), to));
             }
 
             if (status != null) {

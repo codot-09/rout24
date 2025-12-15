@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.mock.web.MockMultipartFile;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.util.Base64;
 
 @Service
 @RequiredArgsConstructor
@@ -64,14 +63,5 @@ public class QRCodeService {
         } catch (Exception e) {
             throw new RuntimeException("QR code o‘qishda xatolik", e);
         }
-    }
-
-    private MultipartFile toMultipart(byte[] bytes, String name) {
-        return new MockMultipartFile(
-                name,
-                name + ".png",
-                "image/png",
-                bytes
-        );
     }
 }

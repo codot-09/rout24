@@ -9,19 +9,19 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 @Configuration
 public class BotConfig {
 
-    private final BotService botService;
+   private final BotService botService;
 
-    public BotConfig(BotService botService) {
-        this.botService = botService;
-    }
+   public BotConfig(BotService botService) {
+       this.botService = botService;
+   }
 
-    @PostConstruct
-    public void init() {
-        try {
-            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-            botsApi.registerBot(botService);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+   @PostConstruct
+   public void init() {
+       try {
+           TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+           botsApi.registerBot(botService);
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+   }
 }

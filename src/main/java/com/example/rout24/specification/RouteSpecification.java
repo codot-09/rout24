@@ -38,7 +38,6 @@ public class RouteSpecification {
     ) {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
-            predicates.add(cb.isFalse(root.get("finished")));
 
             if (from != null) {
                 predicates.add(cb.equal(root.get("fromRegion"), from));

@@ -13,4 +13,5 @@ public class RouteViewResponse {
     private Regions to;
     private BigDecimal price;
     private String coverImageUrl;
+    private boolean finished;
 }

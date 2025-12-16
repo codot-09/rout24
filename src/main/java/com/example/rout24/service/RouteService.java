@@ -162,6 +162,7 @@ public class RouteService {
         response.setCoverImageUrl(r.getVehicle() != null && r.getVehicle().getImages() != null && !r.getVehicle().getImages().isEmpty()
                 ? r.getVehicle().getImages().get(0)
                 : null);
+        response.setFinished(r.isFinished());
         return response;
     }
 

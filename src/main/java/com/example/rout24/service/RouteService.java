@@ -20,12 +20,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -161,9 +159,9 @@ public class RouteService {
         response.setFrom(r.getFromRegion());
         response.setTo(r.getToRegion());
         response.setPrice(r.getPrice());
-        response.setSeatsCount(r.getSeatsCount());
-        response.setDepartureDate(r.getDepartureDate());
-        response.setFinished(r.isFinished());
+        response.setCoverImageUrl(r.getVehicle() != null && r.getVehicle().getImages() != null && !r.getVehicle().getImages().isEmpty()
+                ? r.getVehicle().getImages().get(0)
+                : null);
         return response;
     }
 

@@ -36,7 +36,7 @@ public class AdminService {
             response.setDriverLicense(driverInfo.getDriverLicense());
             response.setPassportId(driverInfo.getPassportId());
             response.setBirthDate(driverInfo.getBirthDate());
-            response.setUsername(driverInfo.getDriver().getUsername());
+            response.setUsername(driverInfo.getDriver().getTgUsername());
             response.setPhone(driverInfo.getPhoneNumber());
             response.setGender(driverInfo.getGender() != null ? driverInfo.getGender().name() : null);
             return response;

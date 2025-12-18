@@ -33,7 +33,6 @@ public class AdminService {
             UnverifiedDriverInfoResponse response = new UnverifiedDriverInfoResponse();
             response.setId(driverInfo.getId());
             response.setDriverName(driverInfo.getDriver().getFullName());
-            response.setDriverContact(driverInfo.getDriver().getChatId());
             response.setDriverLicense(driverInfo.getDriverLicense());
             response.setPassportId(driverInfo.getPassportId());
             response.setBirthDate(driverInfo.getBirthDate());

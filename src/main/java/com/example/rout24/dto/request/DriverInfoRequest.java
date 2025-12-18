@@ -18,5 +18,7 @@ public class DriverInfoRequest {
     @NotNull(message = "Tug'ilgan sana bo'sh bo'lishi mumkin emas")
     private LocalDate birthDate;
 
+    private String phone;
+
     private Gender gender;
 }

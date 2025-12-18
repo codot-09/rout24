@@ -17,4 +17,5 @@ public class DriverProfileResponse {
     private Boolean premiumUser;
     private String plateNumber;
     private String coverImage;
+    private String phone;
 }

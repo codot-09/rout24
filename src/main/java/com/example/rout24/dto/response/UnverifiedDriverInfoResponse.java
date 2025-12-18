@@ -16,10 +16,12 @@ public class UnverifiedDriverInfoResponse {
 
     private UUID id;
     private String driverName;
+    private String username;
     private String driverContact;
     private String driverLicense;
     private String passportId;
     private LocalDate birthDate;
     private String gender;
+    private String phone;
 
 }

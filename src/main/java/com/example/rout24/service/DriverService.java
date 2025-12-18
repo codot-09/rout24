@@ -64,6 +64,7 @@ public class DriverService {
         info.setGender(gender);
         info.setBirthDate(request.getBirthDate());
         info.setStatus(RequestStatus.PENDING);
+        info.setPhoneNumber(request.getPhone());
 
         driverRepository.save(info);
         log.debug("Driver profile finished for: {}", driver.getChatId());

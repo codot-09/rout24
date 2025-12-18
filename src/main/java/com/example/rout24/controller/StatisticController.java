@@ -1,6 +1,7 @@
 package com.example.rout24.controller;
 
 import com.example.rout24.dto.ApiResponse;
+import com.example.rout24.dto.response.AdminStatisticResponse;
 import com.example.rout24.dto.response.UserStatisticResponse;
 import com.example.rout24.entity.User;
 import com.example.rout24.service.StatisticService;
@@ -24,5 +25,10 @@ public class StatisticController {
     public ResponseEntity<ApiResponse<UserStatisticResponse>> getMyStatistics(@AuthenticationPrincipal User user) {
         ApiResponse<UserStatisticResponse> response = statisticService.getUserStatistics(user);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/admin")
+    private ResponseEntity<ApiResponse<AdminStatisticResponse>> getAdminStatistics(){
+        return ResponseEntity.ok(statisticService.getAdminStatistics());
     }
 }

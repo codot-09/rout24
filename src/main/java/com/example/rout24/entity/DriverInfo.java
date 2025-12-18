@@ -35,4 +35,7 @@ public class DriverInfo {
 
     @Enumerated(EnumType.STRING)
     private RequestStatus status;
+
+    @Column(unique = true)
+    private String phoneNumber;
 }

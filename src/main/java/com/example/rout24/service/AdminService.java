@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import com.example.rout24.bot.BotService;
 import com.example.rout24.dto.response.PagedResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ public class AdminService {
 
     private final DriverRepository driverRepository;
     private final NotificationService notificationService;
+    private final BotService botService;
 
     public ApiResponse<PagedResponse<UnverifiedDriverInfoResponse>> getUnverifiedRequests(
             LocalDate from, LocalDate to, String userId, Pageable pageable) {
@@ -62,6 +64,8 @@ public class AdminService {
         driverRepository.save(info);
 
         notificationService.sendNotification(info.getDriver(), "Malumotlar tasdiqlandi !", "Malumotlaringiz tasdiqlandi va profil faollashtirildi ! Endi mashina qo'shing va faoliyatni boshlang",NotificationType.SYSTEM);
+
+        botService.sendMessage(Long.valueOf(info.getDriver().getChatId()),"Profilingiz tasdiqlandi ! Endi mashina qo'shib faoliyatni boshlashingiz mumkin. Keyingi ishlarda omad tilayman !");
 
         return ApiResponse.success(null,"So'rov tasdiqlandi");
     }
